@@ -1,0 +1,85 @@
+#==============================================================================
+#                                  conkyrc
+#
+#  display : CLOCK - ring gauge
+#
+#  author  : Debianmainuser
+#  version : v20150502
+#  license : Distributed under the terms of GNU GPL version 2 or later
+#
+#==============================================================================
+
+background no
+update_interval 1
+
+cpu_avg_samples 2
+net_avg_samples 2
+temperature_unit celsius
+
+double_buffer yes
+no_buffers yes
+text_buffer_size 2048
+
+gap_x 0
+gap_y 40
+minimum_size 235 925
+maximum_width 235
+own_window yes
+own_window_transparent yes
+own_window_class conky
+own_window_argb_visual yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+background no
+border_inner_margin 0
+border_outer_margin 0
+alignment tr
+
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+override_utf8_locale yes
+use_xft yes
+xftfont Technical CE:size=10
+xftalpha 0.5
+uppercase no
+
+default_color 839097
+
+lua_load ~/.conky/conky_grey.lua
+lua_draw_hook_post main
+
+
+TEXT
+${image ~/.conky/img/elegant.png -p 0,0 235x925}
+${goto 10}${font Technical CE:bold:size=16}INFO:
+${goto 40}${font}${pre_exec cat /etc/issue.net}
+${goto 40}${execi 1000 cat /proc/cpuinfo|grep 'model name'|sed -e 's/model name.*: //'| uniq | cut -c 1-32}
+${goto 40}CPU Speed: ${freq_g 1} GHz
+${goto 40}Kernel:  $kernel
+${goto 40}OS: $sysname ($machine)
+${goto 40}UPDATES: ${execi 360 aptitude search "~U" | wc -l | tail}
+${goto 40}GPU1:    ${exec nvidia-settings -t -q [gpu:0]/GPUCoreTemp} °C   GPU2:    ${exec nvidia-settings -t -q [gpu:1]/GPUCoreTemp} °C
+${goto 40}Core0: ${exec sensors|grep 'Core 0'|awk '{print $3}'} Core1: ${exec sensors|grep 'Core 1'|awk '{print $3}'}
+${goto 40}Core2: ${exec sensors|grep 'Core 2'|awk '{print $3}'} Core3: ${exec sensors|grep 'Core 3'|awk '{print $3}'}
+
+${goto 10}${font Technical CE:bold:size=16}CPU:
+
+${voffset 90}${goto 10}${font Technical CE:bold:size=16}DISCS:
+
+${voffset 70}${goto 10}${font Technical CE:bold:size=16}LAN:
+${voffset 70}
+${goto 10}${font}Open Ports:${goto 80}${tcp_portmon 1 65535 count}
+${goto 10}Public IP:${goto 70}${execi 60 wget -O - -q icanhazip.com}
+${goto 10}Lan IP:${goto 70}${addr eth2}
+
+${goto 10}IP Address:${goto 80}${tcp_portmon 1 65535 rip  0}
+${goto 80}${tcp_portmon 1 65535 rip  1}
+${goto 80}${tcp_portmon 1 65535 rip  2}
+${goto 80}${tcp_portmon 1 65535 rip  3}
+${goto 80}${tcp_portmon 1 65535 rip  4}
+${goto 80}${tcp_portmon 1 65535 rip  5}
+${goto 80}${tcp_portmon 1 65535 rip  6}
+${goto 80}${tcp_portmon 1 65535 rip  7}
+${goto 80}${tcp_portmon 1 65535 rip  8}
